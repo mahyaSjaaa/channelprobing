@@ -53,7 +53,10 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ e
       <div><div className="section-label">EKSPERIMEN AKTIF</div><h2>{activeId ?? 'Belum ada eksperimen'}</h2>
         {active && <p className="muted">{active.radio} · {active.firmware} · {(active.frequency_hz / 1e6).toFixed(1)} MHz · diperbarui {fmtDate(active.updated_at)}</p>}
       </div>
-      {list.length > 1 && <div className="quick-switch">{list.slice(0, 5).map((e) => <Link className={`switch-chip ${e.id === activeId ? 'active' : ''}`} href={`/?experiment=${encodeURIComponent(e.id)}`} key={e.id}>{e.id}</Link>)}</div>}
+      <div className="selector-actions">
+        {list.length > 1 && <div className="quick-switch" aria-label="Pilih experiment">{list.slice(0, 5).map((e) => <Link className={`switch-chip ${e.id === activeId ? 'active' : ''}`} href={`/?experiment=${encodeURIComponent(e.id)}`} key={e.id}>{e.id}</Link>)}</div>}
+        {activeId && <a className="download-button" href={`/api/export?experiment=${encodeURIComponent(activeId)}`}>↓ Download CSV experiment</a>}
+      </div>
     </section>
 
     {list.length === 0 ? <section className="panel empty-state"><div className="empty-icon">⌁</div><h2>Belum ada data eksperimen</h2><p>Jalankan program Python di Raspberry Pi dengan konfigurasi Supabase yang benar. Setelah tabel <code>experiments</code> terisi, data akan muncul di sini.</p></section> : <>
